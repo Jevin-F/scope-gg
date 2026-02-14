@@ -61,7 +61,10 @@ export default function Home() {
       })
 
       if (!response.ok) {
-        throw new Error(`API failed: ${response.status}`)
+        const errorData = await response.json().catch(() => ({}))
+        const message = errorData.error?.message || ''
+        const remediation = errorData.error?.remediation || ''
+        throw new Error(`API failed: ${response.status}${message ? ` - ${message}` : ''}${remediation ? `\n\nRemediation: ${remediation}` : ''}`)
       }
 
       const data = await response.json()
@@ -342,7 +345,7 @@ export default function Home() {
                   {/* Video Footer */}
                   <div className="px-5 py-3 border-t border-cyan-500/10 bg-[#0a0a0f] flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="text-[10px] text-white/20 font-semibold tracking-wider">SCOPE.GG v2.0</span>
+                      <span className="text-[10px] text-white/20 font-semibold tracking-wider">SCOPE.GG v1.0</span>
                       <div className="w-[1px] h-3 bg-white/10" />
                       <span className="text-[10px] text-white/20 font-semibold tracking-wider">SYSTEM READY</span>
                     </div>
